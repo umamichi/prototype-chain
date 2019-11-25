@@ -463,12 +463,83 @@ var horse = new Animal('Charlotte');
 ## (おまけ) なぜ `for in` は使うとき注意すべきか
 
 
-### 理由: `for in` は `prototype` まで遡ってループするから
 
-例えば
+例えば、`window.Object` の持つメソッドを拡張したい場合、以下のようなメソッドを `window.Object` のプロトタイプに追加していたとします
+
+```javascript
+Object.prototype.hogeFunction = function() {
+  console.log('hoge');
+};
 ```
 
+この状態で、以下のようなオブジェクトを `for in` で参照すると・・
+
+```javascript
+var object = {
+  name: 'yamada',
+  age: 20
+};
+
+for(var key in object) {
+  console.log('key: ', key);
+}
+
+//　結果
+//　key:  name
+//　key:  age
+//　key:  hogeFunction
 ```
+
+このように、`Object.prototype` に定義した `hogeFunction` まで参照してしまいます
+
+プログラマの意図した動作と違う動きをしてしまうので、`for in` を使うときは注意が必要です
+
+むしろ、本当に `for in` でないと実現できない実装ではない限り、使わなくて良いと思います
+
+### どうすべきか
+
+1. `for in` で `hasOwnProperty` を使う
+
+`prototype` ではない値のみ参照する
+
+```javascript
+for(var key in object) {
+  if (object.hasOwnProperty(key)) {
+    console.log('key: ', key);
+  }
+}
+
+//　結果
+//　key:  name
+//　key:  age
+```
+
+2. `lodash` を使う（おすすめ）
+
+`array` にも `object` にも `forEach` が使えるようになっている
+
+上記のプロトタイプの仕組みを理解した上で、 `lodash` を使うのがおすすめ
+
+ちなみに、lodash の `forEach` のコードを見るとオブジェクトのキーの数だけ `while` で処理している
+
+```
+while (++index < length) {
+  if (iteratee(iterable[index], index, iterable) === false) {
+    break
+  }
+}
+```
+
+[Lodash github forEach (baseEach)](https://github.com/lodash/lodash/blob/cefddab1cab49189b2ff4d72acf8df7ec723dc22/.internal/baseEach.js#L23)
+
+
+
+
+## まとめ
+
+・プロトタイプ、プロトタイプチェーンの仕組みは、 `Babel` を通した後のコードやライブラリ内で用いられている
+
+・
 
 
 <!-- --------------- 違う話かも --------------
