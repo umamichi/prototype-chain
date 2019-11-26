@@ -537,9 +537,11 @@ while (++index < length) {
 
 ## まとめ
 
-・プロトタイプ、プロトタイプチェーンの仕組みは、 `Babel` を通した後のコードやライブラリ内で用いられている
++ すべてのJavaScriptオブジェクトは、プロトタイプを持つ
 
-・
++ 何かの値を参照するときは毎回、プロトタイプチェーンを遡っている
+
++ Class構文も内部的にはプロトタイプ、プロトタイプチェーンの仕組みを使われている、余分なメモリを消費しないため
 
 
 <!-- --------------- 違う話かも --------------
@@ -559,9 +561,6 @@ Premitive＝現式的な
 prototypeをもたないオブジェクト
 https://qiita.com/yoshiwatanabe/items/338705a20e8475e4057e
 
-プリミティブ型とオブジェクト
-https://murashun.jp/blog/20190401-08.html
-
 JavaScriptはオブジェクトについて参照渡しだなんて、信じない
 https://qiita.com/mozisan/items/1b9d4bf5a1bb341dd354
 
@@ -571,7 +570,10 @@ https://developer.mozilla.org/ja/docs/Web/JavaScript/Data_structures#Strings<br 
 C言語　文字列
 https://www.cc.kyoto-su.ac.jp/~yamada/programming/string.html
 
-
 Babel https://babeljs.io/
 
+Class構文
 https://html5experts.jp/takazudo/17355/
+
+プリミティブ型とオブジェクト
+https://murashun.jp/blog/20190401-08.html
